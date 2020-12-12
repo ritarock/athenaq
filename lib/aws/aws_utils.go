@@ -23,9 +23,8 @@ func Session(profile string) *session.Session {
 	}))
 }
 
-func AthenaQuery(profile, bucket, key, query string) {
-	sess := Session(profile)
-	athenaClient := athena.New(sess)
+func RunAthenaQuery(session *session.Session, bucket, key, query string) {
+	athenaClient := athena.New(session)
 
 	resultConf := &athena.ResultConfiguration{}
 	resultConf.SetOutputLocation("s3://" + bucket + key)
@@ -43,7 +42,7 @@ func AthenaQuery(profile, bucket, key, query string) {
 	}
 
 	WaitDone(queryId, athenaClient, output)
-	DownloadResult(sess, output, bucket, key)
+	DownloadResult(session, output, bucket, key)
 }
 
 func WaitDone(queryId *athena.GetQueryExecutionInput, athenaClient *athena.Athena, output *athena.StartQueryExecutionOutput) (id *string, err error) {
