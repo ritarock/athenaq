@@ -67,7 +67,7 @@ func DownloadResult(sess *session.Session, output *athena.StartQueryExecutionOut
 	f, err := os.Create(*output.QueryExecutionId + ".csv")
 	dl, err := downloader.Download(f, &s3.GetObjectInput{
 		Bucket: aws.String(bucket),
-		Key:    aws.String(key),
+		Key:    aws.String(key + *output.QueryExecutionId + ".csv"),
 	})
 	if err != nil {
 		log.Fatal(err)
