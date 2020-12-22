@@ -25,8 +25,8 @@ func main() {
 			&cli.StringFlag{
 				Name:        "profile",
 				Usage:       "set aws profile",
+				Value:       "default",
 				Destination: &profile,
-				Required:    true,
 			},
 			&cli.StringFlag{
 				Name:        "bucket",
