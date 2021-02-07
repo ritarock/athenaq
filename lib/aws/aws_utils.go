@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/user"
 	"time"
+
+	athenaqfile "github.com/ritarock/athenaq/lib/file"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/s3"
@@ -73,4 +76,14 @@ func DownloadResult(sess *session.Session, output *athena.StartQueryExecutionOut
 		log.Fatal(err)
 	}
 	fmt.Printf("Result file %v [bytes]", dl)
+}
+
+func MakeLog(id *string, query string) {
+	usr, _ := user.Current()
+	logDir := usr.HomeDir + "/.athena/"
+	_, err := os.Stat(logDir)
+	if err != nil {
+		athenaqfile.MakeDir(logDir)
+	}
+	athenaqfile.Write(logDir+*id+".log", query)
 }
